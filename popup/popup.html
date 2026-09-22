@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestor de Orçamento</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>Nova Despesa</h1>
+    <button id="btn-options" title="Configurações" type="button">⚙️</button>
+  </header>
+
+  <form id="form-despesa">
+    <label>Descrição
+      <input type="text" id="descricao" required maxlength="255" placeholder="Ex.: Mercado">
+    </label>
+
+    <label>Valor (R$)
+      <input type="number" id="valor" required step="0.01" min="0.01" placeholder="0,00">
+    </label>
+
+    <label>Data
+      <input type="date" id="data" required>
+    </label>
+
+    <label>Categoria
+      <select id="category_id">
+        <option value="">Sem categoria</option>
+      </select>
+    </label>
+
+    <label>Pagamento
+      <select id="tipo_pagamento">
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Débito">Débito</option>
+        <option value="Crédito">Crédito</option>
+      </select>
+    </label>
+
+    <label id="label-conta">Conta
+      <select id="bank_account_id">
+        <option value="">—</option>
+      </select>
+    </label>
+
+    <button type="submit" id="btn-salvar">Salvar</button>
+  </form>
+
+  <p id="status-msg" role="status"></p>
+
+  <section id="secao-recentes">
+    <h2>Últimas despesas</h2>
+    <ul id="lista-recentes"><li class="vazio">Carregando…</li></ul>
+  </section>
+
+  <footer>
+    <span id="sync-status">—</span>
+    <button id="btn-sync" type="button">Sincronizar agora</button>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

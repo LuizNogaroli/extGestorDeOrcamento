@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Gestor de Orçamento — Captura Rápida",
+  "version": "0.1.0",
+  "description": "Captura rápida de despesas para o Gestor de Orçamento (complemento do app web Laravel/Livewire).",
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Nova despesa"
+  },
+  "options_page": "options/options.html",
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["http://*/*", "https://*/*"]
+}

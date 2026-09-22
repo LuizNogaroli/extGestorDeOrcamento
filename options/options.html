@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Opções — Gestor de Orçamento</title>
+  <link rel="stylesheet" href="../popup/popup.css">
+  <style>
+    body { width: 420px; }
+    .botoes { display: flex; gap: 8px; flex-wrap: wrap; }
+    .botoes button[type="button"] {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      color: var(--gray-700);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .ajuda { font-size: 11px; color: var(--gray-500); margin-top: -4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Configurações da Extensão</h1>
+  </header>
+
+  <form id="form-options">
+    <label>URL da API
+      <input type="url" id="apiBaseUrl" required placeholder="http://localhost:8000">
+    </label>
+    <p class="ajuda">A URL do app Laravel (sem barra no final). Ex.: http://localhost:8000.</p>
+
+    <label>Token de acesso
+      <input type="password" id="apiToken" required placeholder="Cole o token gerado em /settings">
+    </label>
+    <p class="ajuda">Gere em /settings → "Gerar Token da Extensão" no app web.</p>
+
+    <div class="botoes">
+      <button type="submit">Salvar</button>
+      <button type="button" id="btn-testar">Testar conexão</button>
+      <button type="button" id="btn-sync">Forçar sincronização agora</button>
+    </div>
+  </form>
+
+  <p id="status-msg" role="status"></p>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

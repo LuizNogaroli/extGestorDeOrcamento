@@ -2,20 +2,15 @@
 
 Este arquivo compila decisões em aberto e funcionalidades ainda não implementadas. Consulte antes de propor algo "novo" — pode já estar anotado aqui.
 
-## 1. Decisão em aberto: tooling da extensão
-Ainda não decidido no código (ver seção 5/14 de `docs/plano-extensao-chrome.md`):
-- **Opção A:** Vite + CRXJS + TypeScript — mais robusto, exige build step.
-- **Opção B:** Vanilla JS + ES Modules nativos, sem bundler — padrão já validado no projeto irmão `extTotalPlanner` (30+ iterações, funcionou bem), zero configuração.
+## 1. ~~Decisão em aberto: tooling da extensão~~ — Resolvido em 2026-09-22
+**Decisão:** Vanilla JS + ES Modules nativos, sem bundler — mesmo padrão do projeto irmão `extTotalPlanner` (30+ iterações, funcionou bem), zero configuração de build.
 
-**Decidir antes de iniciar a Fase 1** (scaffold da extensão).
-
-## 2. Fase 1 — MVP da extensão (não iniciado)
-- [ ] Scaffold conforme decisão de tooling acima + manifest MV3.
-- [ ] `lib/storage` com fallback `chrome.storage.local` → IndexedDB/localStorage.
-- [ ] Options page (apiBaseUrl, token, testar conexão via `GET /api/ping`).
-- [ ] Popup: formulário de captura + fila offline + lista últimas 5 (`GET /api/despesas?limit=5`).
-- [ ] Service worker: sync em background via `chrome.alarms` + badge de pendências.
-- [ ] Teste ponta a ponta: capturar offline → voltar online → aparecer no Dashboard web.
+## 2. Fase 1 — MVP da extensão — Implementado em 2026-09-22, falta validação real
+Código completo (manifest, popup, options, service worker, lib/*) e testado via `rodar.bat` contra o backend real (ver `docs/historico/mvp_captura_rapida_20260922.md`). **Falta:**
+- [ ] Usuário carregar a extensão de verdade via `chrome://extensions` → "Carregar sem compactação" e validar ícone/popup nativo/badge/`chrome.alarms`.
+- [ ] Gerar um token real em `/settings` (o de teste usado nesta sessão foi revogado).
+- [ ] Testar fluxo 100% offline (desligar a rede de verdade, não só simular erro de fetch).
+- [ ] Ícones da extensão (`icons/icon16.png` etc.) — hoje o manifest não declara nenhum, Chrome usa um genérico. Não bloqueia "carregar sem compactação", mas fica pendente.
 
 ## 3. Fase 2 — Complementos (não iniciado)
 - [ ] Endpoint `/api/dashboard/summary` (projeção MM+1) + card no popup.
@@ -31,4 +26,4 @@ Ainda não decidido no código (ver seção 5/14 de `docs/plano-extensao-chrome.
 O Laravel de `gestorDeOrcamento` roda localmente, sem domínio público hoje. A extensão só sincroniza quando consegue alcançar a `apiBaseUrl` configurada — avaliar túnel (Cloudflare/ngrok) se o uso precisar funcionar fora da rede local, sem tratar isso como bloqueante do MVP.
 
 ---
-**Próximo passo:** decidir o item 1 (tooling) e iniciar a Fase 1.
+**Próximo passo:** carregar a extensão no Chrome de verdade (item 2) e, se tudo funcionar, seguir para a Fase 2.

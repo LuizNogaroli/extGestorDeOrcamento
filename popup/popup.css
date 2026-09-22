@@ -1,0 +1,147 @@
+:root {
+  --indigo: #4f46e5;
+  --indigo-dark: #4338ca;
+  --gray-700: #374151;
+  --gray-500: #6b7280;
+  --gray-200: #e5e7eb;
+  --red: #dc2626;
+  --green: #16a34a;
+  --amber: #d97706;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--gray-700);
+  background: #fff;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin: 16px 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+#btn-options {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 4px;
+}
+
+input,
+select {
+  font-size: 13px;
+  padding: 8px;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  font-weight: 400;
+}
+
+button[type="submit"] {
+  background: var(--indigo);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+button[type="submit"]:hover {
+  background: var(--indigo-dark);
+}
+
+#status-msg {
+  min-height: 16px;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+#status-msg.success {
+  color: var(--green);
+}
+
+#status-msg.error {
+  color: var(--red);
+}
+
+#status-msg.warning {
+  color: var(--amber);
+}
+
+#lista-recentes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+#lista-recentes li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+#lista-recentes li.vazio {
+  color: var(--gray-500);
+  font-style: italic;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid var(--gray-200);
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+footer button {
+  background: none;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}

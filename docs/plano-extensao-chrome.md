@@ -65,7 +65,7 @@ App atual é single-user sem login. Não criar login na extensão. Usar **Larave
 | Config/token | `chrome.storage.local` | Não deve sincronizar entre máquinas (token é sensível) |
 | Sync trigger | `chrome.alarms` + evento `online` no service worker | Retry periódico sem manter processo ativo |
 
-**Decisão em aberto — build step vs. vanilla JS:** o `extTotalPlanner` não usa nenhum bundler — é Vanilla JS puro com ES Modules nativos (`<script type="module">`) carregados direto pelo navegador, sem TypeScript, sem Vite/CRXJS, e funcionou bem por dezenas de iterações. Vantagem: zero configuração de build, mais fácil de depurar (o que roda é exatamente o que está no disco). Dado que esta extensão é pequena por escopo (um popup de captura + options + service worker), **vale reconsiderar Vite/CRXJS/TypeScript da seção 5 em favor de Vanilla JS + ES Modules**, seguindo o padrão já validado no projeto irmão — decidir antes de iniciar a Fase 1, não é bloqueante para a Fase 0 (backend).
+**Decisão tomada em 2026-09-22 — Vanilla JS + ES Modules, sem build step:** seguindo o padrão já validado no `extTotalPlanner` (30+ iterações), a extensão usa `<script type="module">` nativo do navegador, sem TypeScript nem Vite/CRXJS. Motivo: escopo pequeno (popup + options + service worker), zero configuração de build, mais fácil de depurar (o que roda é exatamente o que está no disco). A tabela acima (Vite+CRXJS+TypeScript) fica como registro histórico da opção descartada — a estrutura de pastas real está na seção 11, já ajustada para essa decisão.
 
 ---
 
@@ -157,28 +157,29 @@ Todos sob `routes/api.php`, middleware `auth:sanctum`, prefixo `/api`:
 ```
 extGestorDeOrcamento/
 ├── docs/
-│   └── plano-extensao-chrome.md   (este arquivo)
-├── src/
-│   ├── background/
-│   │   └── service-worker.ts      (sync, alarms, badge)
-│   ├── popup/
-│   │   ├── popup.html
-│   │   ├── popup.ts
-│   │   └── popup.css
-│   ├── options/
-│   │   ├── options.html
-│   │   └── options.ts
-│   ├── lib/
-│   │   ├── api-client.ts          (fetch wrapper + auth header)
-│   │   ├── storage.ts             (idb-keyval wrappers)
-│   │   └── sync.ts                (fila -> API, retry/backoff)
-│   └── types/
-│       └── models.ts              (tipos espelhando payloads da API)
+│   ├── plano-extensao-chrome.md   (este arquivo)
+│   ├── MANUAL_TECNICO.md
+│   └── pendencias.md
+├── icons/
+│   ├── icon16.png / icon48.png / icon128.png
+├── background/
+│   └── service-worker.js          (sync, alarms, badge)
+├── popup/
+│   ├── popup.html
+│   ├── popup.js
+│   └── popup.css
+├── options/
+│   ├── options.html
+│   └── options.js
+├── lib/
+│   ├── api-client.js              (fetch wrapper + auth header)
+│   ├── storage.js                 (chrome.storage.local -> localStorage/IndexedDB fallback)
+│   └── sync.js                    (fila -> API, retry/backoff)
 ├── manifest.json
-├── vite.config.ts
-├── package.json
-└── tsconfig.json
+└── CLAUDE.md
 ```
+
+Sem `package.json`/bundler — módulos ES6 carregados via `<script type="module" src="...">` direto no `popup.html`/`options.html`, e `importScripts`/`import` nativo no service worker (MV3 aceita `"type": "module"` na chave `background.service_worker` do manifest).
 
 ---
 
@@ -195,14 +196,14 @@ extGestorDeOrcamento/
 - [ ] Decidir tooling da extensão: Vite+CRXJS+TypeScript vs. Vanilla JS + ES Modules sem build step (ver decisão em aberto na seção 5) — **ainda pendente, bloqueia o início da Fase 1**.
 
 ### Fase 1 — MVP da extensão
-- [ ] Scaffold conforme decisão de tooling da Fase 0 (Vite+CRXJS ou Vanilla JS+ES Modules) + manifest MV3.
-- [ ] `lib/storage.ts` com fallback `chrome.storage.local` → IndexedDB/localStorage puro (ver 14.1), para permitir testar como página comum.
-- [ ] Se Vanilla JS sem Vite: criar servidor de teste local auto-contido com `Cache-Control: no-store` (ver 14.2), nos moldes do `rodar.bat` do projeto irmão.
-- [ ] Options page (apiBaseUrl, token, testar conexão).
-- [ ] Popup: formulário de captura + fila offline + lista últimas 5.
-- [ ] Service worker: sync em background via `chrome.alarms` + badge de pendências.
-- [ ] Teste manual ponta a ponta: capturar offline → voltar online → aparecer no Dashboard web.
-- [ ] Criar primeira entrada em `docs/historico/` documentando o MVP (ver 14.6).
+- [x] Scaffold Vanilla JS + ES Modules + manifest MV3 (decisão tomada em 2026-09-22, ver seção 5).
+- [x] `lib/storage.js` com fallback `chrome.storage.local` → `localStorage` (ver 14.1), para permitir testar como página comum.
+- [x] `rodar.bat` — servidor de teste local auto-contido com `Cache-Control: no-store` (ver 14.2), nos moldes do projeto irmão.
+- [x] Options page (apiBaseUrl, token, testar conexão).
+- [x] Popup: formulário de captura + fila offline + lista últimas 5.
+- [x] Service worker: sync em background via `chrome.alarms` + badge de pendências.
+- [ ] Teste manual ponta a ponta: capturar offline → voltar online → aparecer no Dashboard web (requer carregar a extensão de verdade no Chrome do usuário — fora do alcance desta sessão).
+- [x] Criar primeira entrada em `docs/historico/` documentando o MVP (ver 14.6).
 
 ### Fase 2 — Complementos
 - [ ] Endpoint + card de resumo MM+1 no popup.
